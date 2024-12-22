@@ -14,6 +14,7 @@ st.set_page_config(
 # Mengatur gaya seaborn default
 sns.set(style='darkgrid')
 
+
 @st.cache_data
 def process_data(file_path):
     """
@@ -39,9 +40,11 @@ def process_data(file_path):
 
     # Membuat kolom 'date' dari 'year', 'month', 'day', 'hour' jika tersedia
     if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
-        df['date'] = pd.to_datetime(df[['year', 'month', 'day', 'hour']], errors='coerce')
+        df['date'] = pd.to_datetime(
+            df[['year', 'month', 'day', 'hour']], errors='coerce')
     else:
-        st.error("Kolom 'year', 'month', 'day', atau 'hour' tidak ditemukan dalam data.")
+        st.error(
+            "Kolom 'year', 'month', 'day', atau 'hour' tidak ditemukan dalam data.")
         st.stop()
 
     # Mengonversi kolom 'date' ke tipe datetime
@@ -72,6 +75,7 @@ def process_data(file_path):
 
     return df
 
+
 def plot_pm25_over_time(df, style, palette):
     """
     Membuat plot PM2.5 variasi waktu untuk seluruh data.
@@ -95,6 +99,7 @@ def plot_pm25_over_time(df, style, palette):
     plt.legend(title='Station')
     st.pyplot(plt.gcf())
     plt.clf()
+
 
 def plot_pm10_over_time(df, style, palette):
     """
@@ -120,6 +125,7 @@ def plot_pm10_over_time(df, style, palette):
     st.pyplot(plt.gcf())
     plt.clf()
 
+
 def plot_average_monthly_pm25(df, style, palette):
     """
     Membuat plot rata-rata bulanan PM2.5 per stasiun.
@@ -133,20 +139,23 @@ def plot_average_monthly_pm25(df, style, palette):
         st.error("Kolom 'PM2.5', 'month', atau 'station' tidak ditemukan dalam data.")
         return
 
-    monthly_pollution_station = df.groupby(['station', 'month'])[['PM2.5']].mean().reset_index()
+    monthly_pollution_station = df.groupby(['station', 'month'])[
+        ['PM2.5']].mean().reset_index()
 
     plt.figure(figsize=(12, 6))
     sns.set_style(style)
     sns.set_palette(palette)
-    sns.lineplot(data=monthly_pollution_station, x='month', y='PM2.5', hue='station', marker='o')
+    sns.lineplot(data=monthly_pollution_station, x='month',
+                 y='PM2.5', hue='station', marker='o')
     plt.title('Average Monthly PM2.5 Levels by Station')
     plt.xlabel('Month')
     plt.ylabel('PM2.5 Concentration')
-    plt.xticks(np.arange(1, 13), ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+    plt.xticks(np.arange(1, 13), ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
     plt.legend(title='Station')
     st.pyplot(plt.gcf())
     plt.clf()
+
 
 def plot_average_monthly_pm10(df, style, palette):
     """
@@ -161,20 +170,23 @@ def plot_average_monthly_pm10(df, style, palette):
         st.error("Kolom 'PM10', 'month', atau 'station' tidak ditemukan dalam data.")
         return
 
-    monthly_pollution_station = df.groupby(['station', 'month'])[['PM10']].mean().reset_index()
+    monthly_pollution_station = df.groupby(['station', 'month'])[
+        ['PM10']].mean().reset_index()
 
     plt.figure(figsize=(12, 6))
     sns.set_style(style)
     sns.set_palette(palette)
-    sns.lineplot(data=monthly_pollution_station, x='month', y='PM10', hue='station', marker='o')
+    sns.lineplot(data=monthly_pollution_station, x='month',
+                 y='PM10', hue='station', marker='o')
     plt.title('Average Monthly PM10 Levels by Station')
     plt.xlabel('Month')
     plt.ylabel('PM10 Concentration')
-    plt.xticks(np.arange(1, 13), ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+    plt.xticks(np.arange(1, 13), ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
     plt.legend(title='Station')
     st.pyplot(plt.gcf())
     plt.clf()
+
 
 def plot_average_seasonal_pm25(df, style, palette):
     """
@@ -186,21 +198,25 @@ def plot_average_seasonal_pm25(df, style, palette):
     - palette (str): Palet warna seaborn yang dipilih.
     """
     if 'PM2.5' not in df.columns or 'season' not in df.columns or 'station' not in df.columns:
-        st.error("Kolom 'PM2.5', 'season', atau 'station' tidak ditemukan dalam data.")
+        st.error(
+            "Kolom 'PM2.5', 'season', atau 'station' tidak ditemukan dalam data.")
         return
 
-    seasonal_pollution_station = df.groupby(['station', 'season'])[['PM2.5']].mean().reset_index()
+    seasonal_pollution_station = df.groupby(['station', 'season'])[
+        ['PM2.5']].mean().reset_index()
 
     plt.figure(figsize=(10, 6))
     sns.set_style(style)
     sns.set_palette(palette)
-    sns.barplot(x='season', y='PM2.5', hue='station', data=seasonal_pollution_station, palette='Set2')
+    sns.barplot(x='season', y='PM2.5', hue='station',
+                data=seasonal_pollution_station, palette='Set2')
     plt.title('Average Seasonal PM2.5 Levels by Station')
     plt.xlabel('Season')
     plt.ylabel('PM2.5 Concentration')
     plt.legend(title='Station')
     st.pyplot(plt.gcf())
     plt.clf()
+
 
 def plot_average_seasonal_pm10(df, style, palette):
     """
@@ -215,18 +231,21 @@ def plot_average_seasonal_pm10(df, style, palette):
         st.error("Kolom 'PM10', 'season', atau 'station' tidak ditemukan dalam data.")
         return
 
-    seasonal_pollution_station = df.groupby(['station', 'season'])[['PM10']].mean().reset_index()
+    seasonal_pollution_station = df.groupby(['station', 'season'])[
+        ['PM10']].mean().reset_index()
 
     plt.figure(figsize=(10, 6))
     sns.set_style(style)
     sns.set_palette(palette)
-    sns.barplot(x='season', y='PM10', hue='station', data=seasonal_pollution_station, palette='Set1')
+    sns.barplot(x='season', y='PM10', hue='station',
+                data=seasonal_pollution_station, palette='Set1')
     plt.title('Average Seasonal PM10 Levels by Station')
     plt.xlabel('Season')
     plt.ylabel('PM10 Concentration')
     plt.legend(title='Station')
     st.pyplot(plt.gcf())
     plt.clf()
+
 
 def plot_correlation_heatmap(df, style, palette):
     """
@@ -251,6 +270,7 @@ def plot_correlation_heatmap(df, style, palette):
     plt.title('Correlation between Weather Conditions and Pollution Levels')
     st.pyplot(plt.gcf())
     plt.clf()
+
 
 def main():
     """
@@ -281,14 +301,15 @@ def main():
     )
 
     # Path ke file CSV
-    file_path = 'combined_data.csv'
+    file_path = 'https://raw.githubusercontent.com/paizramadhan/analisis-data-dicoding/main/dashboard/combined_data.csv'
 
     # Memuat dan memproses data
     combined_df = process_data(file_path)
 
     # Menampilkan DataFrame yang telah diproses
     st.subheader("Data Kualitas Udara")
-    st.write("Berikut adalah data yang saya gunakan, data tersebut berasal dari [GitHub Repository](https://github.com/marceloreis/HTI/tree/master).")
+    st.write(
+        "Berikut adalah data yang saya gunakan, data tersebut berasal dari [GitHub Repository](https://github.com/marceloreis/HTI/tree/master).")
     st.dataframe(combined_df)
 
     # Menambahkan Pertanyaan Bisnis
@@ -297,7 +318,8 @@ def main():
     st.write("2. Apa korelasi antara kondisi cuaca (misalnya, suhu, kecepatan angin, dan tekanan) dan tingkat polusi di wilayah ini?")
 
     # Membuat Tabs untuk Memisahkan Plot
-    tabs = st.tabs(["Pertanyaan Bisnis No.1", "Pertanyaan Bisnis No.2", "Kesimpulan"])
+    tabs = st.tabs(["Pertanyaan Bisnis No.1",
+                   "Pertanyaan Bisnis No.2", "Kesimpulan"])
 
     # Tab untuk Pertanyaan Bisnis No.1
     with tabs[0]:
@@ -369,7 +391,8 @@ def main():
     with tabs[1]:
         # Menampilkan grafik Korelasi antara Cuaca dan Polusi dengan container dan expander
         with st.container():
-            st.subheader("Correlation between Weather Conditions and Pollution Levels")
+            st.subheader(
+                "Correlation between Weather Conditions and Pollution Levels")
             # Menambahkan label bahwa ini adalah jawaban untuk pertanyaan bisnis No.2
             # st.markdown("**Menjawab Pertanyaan Bisnis No.2**")
             plot_correlation_heatmap(combined_df, style, palette)
@@ -385,6 +408,7 @@ def main():
         st.write("""
             Analisis data kualitas udara di stasiun Aotizhongxin dan Changping menunjukkan adanya perbedaan pola musiman yang signifikan antara kedua lokasi. Stasiun Aotizhongxin umumnya mengalami puncak polusi pada awal dan akhir tahun, sementara Changping pada pertengahan tahun. Secara keseluruhan, kualitas udara di Aotizhongxin lebih buruk dibandingkan Changping. Selain itu, terdapat korelasi yang sangat kuat antara konsentrasi PM2.5 dan PM10, mengindikasikan adanya sumber polusi yang sama atau faktor yang sama yang memengaruhi keduanya. Korelasi negatif antara suhu dan tekanan udara juga ditemukan, yang merupakan fenomena meteorologi umum. Variasi dalam distribusi konsentrasi berbagai polutan menunjukkan adanya masalah kualitas udara yang perlu diperhatikan, terutama di daerah dengan konsentrasi polutan tinggi atau pola distribusi yang tidak normal.
         """)
+
 
 if __name__ == '__main__':
     main()
