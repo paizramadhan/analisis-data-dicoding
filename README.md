@@ -76,8 +76,8 @@ To set up the project environment, follow these steps:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/air-quality-analysis.git
-   cd air-quality-analysis
+   git clone https://github.com/paizramadhan/analisis-data-dicoding.git
+   cd analisis-data-dicoding
    ```
 
 2. **Create a Virtual Environment**
@@ -86,7 +86,7 @@ To set up the project environment, follow these steps:
 
    ```bash
    python3 -m venv .venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   source .venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 3. **Install Dependencies**
@@ -121,11 +121,15 @@ This will launch the dashboard in your default web browser, allowing you to expl
 air-quality-analysis/
 ├── dashboard/
 │   └── dashboard.py
+│   └── plot.py
+│   └── combined_data.csv
 ├── data/
-│   └── df_imputed.csv
+│   └── PRSA_Data_Aotizhongxin_20130301-20170228.csv
+│   └── PRSA_Data_Changping_20130301-20170228.csv
 ├── requirements.txt
 ├── README.md
-└── LICENSE
+├── url.txt
+└── .gitignore
 ```
 
 - **dashboard/**: Contains the Streamlit dashboard application.
